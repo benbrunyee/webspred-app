@@ -1,0 +1,11 @@
+.SectionContainer {
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 10px;
+  transition: all 0.15s ease-in-out;
+
+  &.FocusContainer {
+    background-color: #F2F2F2;
+  }
+}

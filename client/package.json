@@ -1,0 +1,103 @@
+{
+  "name": "webspred-app",
+  "description": "Webspred App",
+  "author": "Ben Brunyee",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "./",
+  "engines": {
+    "node": "14.21.3",
+    "npm": "6.14.18"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "concurrently \"set BROWSER=none && npm start\" \"wait-on http://localhost:3000 && set ELECTRON_START_URL=http://localhost:3000 && electron .\"",
+    "preelectron-pack": "npm run build",
+    "electron-pack": "electron-builder -c.extraMetadata.main=main.js"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "cheerio": "^1.0.0-rc.5",
+    "clsx": "^1.1.1",
+    "concurrently": "^5.3.0",
+    "dotenv": "^16.3.1",
+    "electron-oauth2": "^3.0.0",
+    "events": "^3.2.0",
+    "formik": "^2.2.6",
+    "fs": "0.0.1-security",
+    "fs-exists-sync": "^0.1.0",
+    "googleapis": "^39.2.0",
+    "node-fetch": "^2.6.1",
+    "nodemailer": "^6.4.17",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "sass": "^1.63.6",
+    "selenium-webdriver": "^4.0.0-alpha.8",
+    "wait-on": "^5.2.1",
+    "web-vitals": "^0.2.4"
+  },
+  "main": "main.js",
+  "build": {
+    "productName": "Webspred App",
+    "appId": "nonExistentID",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "main.js",
+      "preload.js",
+      "Store.js",
+      "public/*",
+      "src/scripts/*Electron*"
+    ],
+    "win": {
+      "icon": "public/icon.ico"
+    },
+    "mac": {
+      "icon": "public/icon.ico",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    }
+  },
+  "publish": {
+    "provider": "s3",
+    "bucket": "webspred-app-bucket",
+    "region": "eu-west-2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^11.2.2",
+    "electron-builder": "^22.9.1",
+    "electron-reloader": "^1.2.0",
+    "react-scripts": "^4.0.2"
+  }
+}

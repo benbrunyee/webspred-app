@@ -1,0 +1,101 @@
+.SectionContainer {
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 10px;
+  transition: all 0.15s ease-in-out;
+
+  &.FocusContainer {
+    background-color: #F2F2F2;
+  }
+}
+
+.FormContainer {
+  margin: 20px 0 0;
+
+  & > * {
+    margin: 0 20px 20px 0 !important;
+    width: fit-content;
+  }
+}
+
+.Divider {
+  margin: 20px 0 !important;
+}
+
+.CheckboxContainer {
+  & > * {
+    margin-right: 20px !important;
+  }
+}
+
+.ProgressContainer {
+  width: 100%;
+  text-align: center;
+
+  .Progress {
+    margin-top: 20px !important;
+  }
+}
+
+.EmailContainer {
+  & > * {
+    margin-top: 20px !important;
+  }
+}
+
+.BtnContainer {
+  & > * {
+    margin-right: 10px !important;
+  }
+}
+
+.ProcessesDiv {
+  margin-top: 20px;
+
+  .ProcessesContainer {
+    background-color: #fff;
+    border-radius: 5px;
+    min-height: 50px;
+    max-height: 200px;
+    overflow: auto;
+    width: 100%;
+    border: 1px solid #bbb;
+
+    .Process {
+      display: flex;
+      margin: 10px 0;
+
+      span {
+        margin: 0 0 0 10px;
+        white-space: nowrap;
+      }
+
+      .Progress {
+        width: 100%;
+        margin: auto 10px !important;
+      }
+    }
+  }
+}
+
+
+.DataGatheredContainer {
+  margin-top: 20px;
+
+  .DataGathered {
+    background-color: #fff;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    width: 100%;
+    overflow: auto;
+    max-height: 100px;
+    min-height: 50px;
+  }
+}
+
+.OutlinedBtnContainer {
+  & > * {
+    margin: 5px 5px 5px 0 !important;
+  }
+}

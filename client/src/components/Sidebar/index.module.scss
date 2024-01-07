@@ -1,0 +1,50 @@
+.Title {
+  height: 60px;
+  width: inherit;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  font-family: Pacifico, cursive !important;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.07);
+
+  & > a {
+    flex-grow: 1;
+  }
+
+  img {
+    max-width: inherit;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 15px 0;
+    margin: auto;
+    max-height: 4em;
+    display: flex;
+
+    @media screen and (max-width: 768px) {
+      max-width: 100px;
+    }
+  }
+}
+
+.toggleSideBar {
+  position: absolute !important;
+  right: 10px;
+  z-index: 2;
+}
+
+.Options {
+  flex-grow: 1;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.Action button {
+  color: #fff;
+  background: var(--primary-color);
+}
+
+.Action button:hover {
+  box-shadow: none;
+  color: #fff;
+  background: var(--primary-color);
+}

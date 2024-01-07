@@ -1,0 +1,22 @@
+.Navbar {
+  margin-top: 0;
+  height: 60px;
+  min-height: 60px;
+  text-align: left;
+  display: flex;
+  box-shadow: 10px 0 12px 0 rgba(0, 0, 0, 0.2);
+  background: #fff;
+  flex: 0 1 auto;
+  z-index: 1;
+}
+
+.Title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin: auto 0 auto 1em;
+  border: 1px black;
+  font-size: 1.17em;
+  font-family: 'Poppins', sans-serif;
+}

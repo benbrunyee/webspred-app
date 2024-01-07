@@ -1,0 +1,29 @@
+.SpacedContainer {
+  > * {
+    margin-top: 20px !important;
+  }
+
+  > :first-child {
+    margin-top: unset !important;
+  }
+}
+
+.Divider {
+  margin: 20px 0 !important;
+}
+
+.ButtonContainer {
+  > * {
+    margin-right: 15px !important;
+  }
+
+  > :last-child {
+    margin-right: unset !important;
+  }
+}
+
+.CheckboxContainer {
+  & > * {
+    margin-right: 20px !important;
+  }
+}

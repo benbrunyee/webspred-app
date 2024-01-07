@@ -1,0 +1,1 @@
+window.ipcRenderer = require('electron').ipcRenderer; // Set for client so we can use ipcRenderer without import

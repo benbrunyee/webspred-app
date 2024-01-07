@@ -1,0 +1,25 @@
+.Notification {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.Notification p {
+    margin: 0 0 0 10px;
+}
+
+.error svg {
+    color: #f44336;
+}
+
+.success svg {
+    color: #4caf50;
+}
+
+.warning svg {
+    color: #FFCC00;
+}
+
+.info svg {
+    color: #aaaaaa;
+}
