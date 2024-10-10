@@ -1,6 +1,6 @@
 {
-  "name": "webspred-app",
-  "description": "Webspred App",
+  "name": "tynker-app",
+  "description": "Tynker App",
   "author": "Ben Brunyee",
   "version": "0.1.1",
   "private": true,
@@ -49,7 +49,7 @@
   },
   "main": "main.js",
   "build": {
-    "productName": "Webspred App",
+    "productName": "Tynker App",
     "appId": "nonExistentID",
     "files": [
       "build/**/*",
