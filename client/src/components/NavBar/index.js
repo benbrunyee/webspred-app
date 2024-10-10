@@ -1,10 +1,10 @@
-import clsx from "clsx";
-import React from "react";
-import Heading from "../Heading";
-import styles from "./index.module.scss";
 import { IconButton } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import clsx from "clsx";
+import React from "react";
 import { useViewport } from "../../context/viewport";
+import Heading from "../Heading";
+import styles from "./index.module.scss";
 
 const NavBar = ({
   open,
@@ -29,7 +29,7 @@ const NavBar = ({
           >
             <MenuIcon />
           </IconButton>
-          {!isMobile && <Heading>Webspred Tools</Heading>}
+          {!isMobile && <Heading>Tynker Tools</Heading>}
         </div>
       </div>
     </>

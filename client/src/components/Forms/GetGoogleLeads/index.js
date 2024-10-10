@@ -1,22 +1,23 @@
-import React from "react";
-import { Formik, Form } from "formik";
 import {
-  TextField,
   Button,
+  Checkbox,
   Divider,
-  Typography,
   FormControlLabel,
   FormLabel,
-  MenuItem,
-  Checkbox,
   LinearProgress,
+  MenuItem,
+  TextField,
+  Typography,
 } from "@material-ui/core";
+import { Form, Formik } from "formik";
 import PropTypes from "prop-types";
-import styles from "./index.module.scss";
-import getLeads from "../../../scripts/getLeads";
-import formatEmailVars from "../../../scripts/formatEmailVars";
+import React from "react";
 import UserDataContext from "../../../context/userData";
+import { capitalizeCamelCase } from "../../../lib/util";
+import formatEmailVars from "../../../scripts/formatEmailVars";
+import getLeads from "../../../scripts/getLeads";
 import SectionContainer from "../../SectionContainer";
+import styles from "./index.module.scss";
 
 class GetGoogleLeads extends React.Component {
   static initialEmailVars = [
@@ -30,6 +31,13 @@ class GetGoogleLeads extends React.Component {
     "instagramPageLink",
     "domain",
   ];
+  static emailShortcuts = [
+    "ben@tynkerai.com",
+    "chris@headlineathens.com",
+    "chris@mimolabs.com",
+  ];
+
+  tokenWarningServed = false;
 
   static contextType = UserDataContext;
 
@@ -46,7 +54,8 @@ class GetGoogleLeads extends React.Component {
             getSemRushInfo: false,
             email: "",
             timeframe: "anytime",
-            sender: "@webspred.com",
+            sender: "",
+            replyTo: "",
             subject: "",
             saveToGoogle: true,
           },
@@ -91,13 +100,22 @@ class GetGoogleLeads extends React.Component {
 
       // If the current date and time is still larger than the valid timeframe of the token, then alert the user.
       if (new Date().getTime() > tokenDate.getTime()) {
+        !this.tokenWarningServed &&
+          notificationDispatcher({
+            type: "add",
+            item: {
+              type: "info",
+              indefinite: true,
+              canClose: false,
+              message:
+                "Your token is no longer valid. Please re-authenticate with Google to be able to create drafts.",
+            },
+          });
+        this.tokenWarningServed = true;
+      } else {
+        this.tokenWarningServed = false;
         notificationDispatcher({
-          type: "add",
-          item: {
-            type: "info",
-            message:
-              "Your token is no longer valid. Please re-authenticate with Google to be able to create drafts.",
-          },
+          type: "removeAll",
         });
       }
     }
@@ -135,9 +153,16 @@ class GetGoogleLeads extends React.Component {
       ]);
     }
 
+    const spreadsheetLeadId = await window.ipcRenderer.invoke(
+      "getSpreadsheetId",
+      {
+        type: "leads",
+      }
+    );
+
     try {
       return await window.ipcRenderer.invoke("saveToGoogleSheets", {
-        spreadsheetId: "1_0XlG1KEYESxm9sWMhwJ4kbWKRCAlSAS2qT1K3YS8ZE",
+        spreadsheetId: spreadsheetLeadId,
         token: this.context.token.token,
         data,
       });
@@ -387,6 +412,7 @@ class GetGoogleLeads extends React.Component {
           return {
             to: info.contactPage.email,
             sender: values.sender,
+            replyTo: values.replyTo,
             subject: formatEmailVars({
               // Format the subject
               email: values.subject,
@@ -660,19 +686,20 @@ class GetGoogleLeads extends React.Component {
                     >
                       <div className={styles.EmailContainer}>
                         <div className={styles.OutlinedBtnContainer}>
-                          {["ben", "andrew"].map((name) => (
+                          {GetGoogleLeads.emailShortcuts.map((email) => (
                             <Button
-                              key={name}
-                              onClick={() =>
+                              key={email}
+                              onClick={() => {
                                 setValues({
                                   ...values,
-                                  sender: name + "@webspred.com",
-                                })
-                              }
+                                  replyTo: values.replyTo || email,
+                                  sender: email,
+                                });
+                              }}
                               size="small"
                               variant="outlined"
                             >
-                              {name}
+                              {email}
                             </Button>
                           ))}
                         </div>
@@ -687,6 +714,33 @@ class GetGoogleLeads extends React.Component {
                           helperText={errors.sender || ""}
                         />
                         <div className={styles.OutlinedBtnContainer}>
+                          {GetGoogleLeads.emailShortcuts.map((email) => (
+                            <Button
+                              key={email}
+                              onClick={() =>
+                                setValues({
+                                  ...values,
+                                  replyTo: email,
+                                })
+                              }
+                              size="small"
+                              variant="outlined"
+                            >
+                              {email}
+                            </Button>
+                          ))}
+                        </div>
+                        <TextField
+                          name="replyTo"
+                          placeholder="Reply to"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.replyTo}
+                          error={Boolean(errors.replyTo)}
+                          fullWidth
+                          helperText={errors.replyTo || ""}
+                        />
+                        <div className={styles.OutlinedBtnContainer}>
                           {this.state.emailVars.map((emailVar) => (
                             <Button
                               key={emailVar}
@@ -699,7 +753,7 @@ class GetGoogleLeads extends React.Component {
                               variant="outlined"
                               size="small"
                             >
-                              {emailVar}
+                              {capitalizeCamelCase(emailVar)}
                             </Button>
                           ))}
                         </div>
@@ -726,7 +780,7 @@ class GetGoogleLeads extends React.Component {
                               variant="outlined"
                               size="small"
                             >
-                              {emailVar}
+                              {capitalizeCamelCase(emailVar)}
                             </Button>
                           ))}
                         </div>

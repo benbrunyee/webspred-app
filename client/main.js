@@ -13,6 +13,9 @@ dotenv.config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
+const USED_SPREADSHEET_ID = process.env.USED_SPREADSHEET_ID;
+const LEAD_SPREADSHEET_ID = process.env.LEAD_SPREADSHEET_ID;
+
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.warn("No Google API credentials found.");
 }
@@ -37,7 +40,7 @@ const createWindow = () => {
       nodeIntegration: true,
       preload: path.join(__dirname, "preload.js"),
     },
-    title: "Webspred App",
+    title: "Tynker App",
     show: false,
   });
 
@@ -117,6 +120,17 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+  }
+});
+
+ipcMain.handle("getSpreadsheetId", (event, { type }) => {
+  switch (type) {
+    case "leads":
+      return LEAD_SPREADSHEET_ID;
+    case "used":
+      return USED_SPREADSHEET_ID;
+    default:
+      return null;
   }
 });
 
@@ -429,13 +443,13 @@ ipcMain.handle("createDrafts", async (event, { token, emails }) => {
   };
 
   // For every email object we will create a draft
-  for (let { sender, subject, html, to, attachments } of emails) {
+  for (let { sender, replyTo, subject, html, to, attachments } of emails) {
     // Create the email with the params provided
     const mail = new MailComposer({
       from: sender,
       sender,
       to,
-      replyTo: "contact@webspred.com",
+      replyTo: replyTo,
       subject,
       html,
       ...(Array.isArray(attachments) && {
@@ -512,19 +526,20 @@ ipcMain.handle("createDrafts", async (event, { token, emails }) => {
  * @param {class} sheets - The Google Sheets API class.
  */
 async function getLoggedLeads(sheets) {
-  const usedLeadSpredId = "1vOf2e9ZVCzDMxgksjJe0XNBRxPk8Ccz-3AZt23GZLD0";
-  const leadSpredId = "1_0XlG1KEYESxm9sWMhwJ4kbWKRCAlSAS2qT1K3YS8ZE";
+  if (!USED_SPREADSHEET_ID || !LEAD_SPREADSHEET_ID) {
+    throw new Error("No spreadsheet ID provided.");
+  }
 
   const usedLeads = (
     await sheets.spreadsheets.values.get({
-      spreadsheetId: usedLeadSpredId,
+      spreadsheetId: USED_SPREADSHEET_ID,
       range: "Sheet1!A2:A", // Only get the domain column
     })
   ).data.values;
 
   const loggedLeads = (
     await sheets.spreadsheets.values.get({
-      spreadsheetId: leadSpredId,
+      spreadsheetId: LEAD_SPREADSHEET_ID,
       range: "Sheet1!A2:A", // Only get the domain column
     })
   ).data.values;
@@ -549,7 +564,7 @@ function authGoogleSheets(token) {
 }
 
 /**
- * Saves the data to the Webspred Google sheet whilst avoiding duplicates.
+ * Saves the data to the Google sheet whilst avoiding duplicates.
  * @param {array} data - An array of the data to be saved.
  * @param {string} token - The token for the user.
  */
@@ -687,7 +702,7 @@ ipcMain.handle("createGoogleBotLock", (event, time) => {
 /**
  * Searches linkedin page by page with search terms provided by the user.
  * The data found is returned but also has the option to save to the Google Sheet
- * in the Webspred drive.
+ * in the Google drive.
  */
 ipcMain.handle(
   "getLinkedInLeads",
@@ -905,7 +920,7 @@ ipcMain.handle(
           if (Object.keys(currentData).length > 0) {
             try {
               const saveToGoogleResult = await saveToGoogle(
-                "1_0XlG1KEYESxm9sWMhwJ4kbWKRCAlSAS2qT1K3YS8ZE",
+                LEAD_SPREADSHEET_ID,
                 // Transform the data into a nested array
                 [
                   [

@@ -1,28 +1,27 @@
-import React, { useEffect, useState, useRef } from "react";
-import "./App.scss";
-import { NavLink } from "react-router-dom";
-import Router from "./components/Router";
-import { Route, Switch } from "react-router";
+import { CircularProgress, Drawer, Typography } from "@material-ui/core";
 import {
   createMuiTheme,
   makeStyles,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import { useViewport, ViewportProvider } from "./context/viewport";
-import NotificationDisplay from "./components/Notification";
-import { NotificationProvider } from "./context/notifications";
-import { Typography, Drawer } from "@material-ui/core";
-import clsx from "clsx";
-import NavBar from "./components/NavBar";
-import PageView from "./components/Page";
-import { OptionGroup, Option } from "./components/OptionGroup";
-import SideBar from "./components/Sidebar";
-import CopyrightBanner from "./components/CopyrightBanner";
-import GetGoogleLeadsRoute from "./routes/GetGoogleLeads";
-import AuthorizeGoogle from "./components/Authorize/Google";
 import ContactPhoneIcon from "@material-ui/icons/ContactPhone";
+import clsx from "clsx";
+import React, { useEffect, useRef, useState } from "react";
+import { Route, Switch } from "react-router";
+import { NavLink } from "react-router-dom";
+import "./App.scss";
+import AuthorizeGoogle from "./components/Authorize/Google";
+import CopyrightBanner from "./components/CopyrightBanner";
+import NavBar from "./components/NavBar";
+import NotificationDisplay from "./components/Notification";
+import { Option, OptionGroup } from "./components/OptionGroup";
+import PageView from "./components/Page";
+import Router from "./components/Router";
+import SideBar from "./components/Sidebar";
+import { NotificationProvider } from "./context/notifications";
 import UserDataContext from "./context/userData";
-import { CircularProgress } from "@material-ui/core";
+import { useViewport, ViewportProvider } from "./context/viewport";
+import GetGoogleLeadsRoute from "./routes/GetGoogleLeads";
 import GetLinkedInLeadsRoute from "./routes/GetLinkedInLeads";
 
 const useStyles = makeStyles((theme) => {
@@ -104,7 +103,7 @@ const useStyles = makeStyles((theme) => {
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#6320EE",
+      main: "#59CAF3",
     },
     warning: {
       main: "#E50000",
@@ -306,7 +305,11 @@ const App = () => {
                         })}
                       >
                         <Switch>
-                          <Route exact path="/" component={GetGoogleLeadsRoute} />
+                          <Route
+                            exact
+                            path="/"
+                            component={GetGoogleLeadsRoute}
+                          />
                         </Switch>
                         <Switch>
                           <Route
